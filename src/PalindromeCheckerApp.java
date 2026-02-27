@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
@@ -8,12 +10,12 @@ public class PalindromeCheckerApp {
         System.out.println("========================================");
         System.out.println("   Palindrome Checker Management System ");
         System.out.println("========================================");
-        System.out.println("Application Version: 4.0");
+        System.out.println("Application Version: 5.0");
         System.out.println("Application started successfully.");
         System.out.println();
 
         // --------------------------------------------------------
-        // UC4 - Character Array Based Palindrome Check
+        // UC5 - Stack-Based Palindrome Check
         // --------------------------------------------------------
 
         // Test words
@@ -21,27 +23,28 @@ public class PalindromeCheckerApp {
 
         for (String original : testWords) {
 
-            // Step 1: Convert String to char[]
-            char[] chars = original.toCharArray();
+            // Step 1: Push all characters into the Stack
+            Stack<Character> stack = new Stack<>();
 
-            // Step 2: Two-pointer approach
-            int start = 0;                  // pointer from the beginning
-            int end = chars.length - 1;     // pointer from the end
-            boolean isPalindrome = true;
-
-            while (start < end) {
-                // Step 3: Compare start and end characters
-                if (chars[start] != chars[end]) {
-                    isPalindrome = false;   // mismatch found, not a palindrome
-                    break;
-                }
-                start++;  // move start pointer forward
-                end--;    // move end pointer backward
+            for (int i = 0; i < original.length(); i++) {
+                stack.push(original.charAt(i));  // push each character
             }
 
-            // Display result
+            // Step 2: Pop characters from Stack to build reversed string
+            // Stack follows LIFO — last pushed character comes out first
+            String reversed = "";
+
+            while (!stack.isEmpty()) {
+                reversed = reversed + stack.pop();  // pop reverses the order
+            }
+
+            // Step 3: Compare original with reversed
+            boolean isPalindrome = original.equals(reversed);
+
+            // Print result
             System.out.println("Original  : " + original);
-            System.out.println("Char[]    : " + java.util.Arrays.toString(chars));
+            System.out.println("Reversed  : " + reversed);
+            System.out.println("Stack     : LIFO reversal applied");
             System.out.println("Result    : \"" + original + "\" " +
                     (isPalindrome ? "IS a palindrome ✓" : "is NOT a palindrome ✗"));
             System.out.println("----------------------------------------");
