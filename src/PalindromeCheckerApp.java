@@ -8,12 +8,12 @@ public class PalindromeCheckerApp {
         System.out.println("========================================");
         System.out.println("   Palindrome Checker Management System ");
         System.out.println("========================================");
-        System.out.println("Application Version: 3.0");
+        System.out.println("Application Version: 4.0");
         System.out.println("Application started successfully.");
         System.out.println();
 
         // --------------------------------------------------------
-        // UC3 - Palindrome Check via String Reversal
+        // UC4 - Character Array Based Palindrome Check
         // --------------------------------------------------------
 
         // Test words
@@ -21,28 +21,29 @@ public class PalindromeCheckerApp {
 
         for (String original : testWords) {
 
-            // Step 1: Reverse the string using a for loop
-            // String is immutable — each + creates a new String object
-            String reversed = "";
+            // Step 1: Convert String to char[]
+            char[] chars = original.toCharArray();
 
-            for (int i = original.length() - 1; i >= 0; i--) {
-                reversed = reversed + original.charAt(i); // String concatenation
+            // Step 2: Two-pointer approach
+            int start = 0;                  // pointer from the beginning
+            int end = chars.length - 1;     // pointer from the end
+            boolean isPalindrome = true;
+
+            while (start < end) {
+                // Step 3: Compare start and end characters
+                if (chars[start] != chars[end]) {
+                    isPalindrome = false;   // mismatch found, not a palindrome
+                    break;
+                }
+                start++;  // move start pointer forward
+                end--;    // move end pointer backward
             }
 
-            // Step 2: Compare original and reversed using equals()
-            // equals() compares content, not memory reference
-            boolean isPalindrome = original.equals(reversed);
-
-            // Step 3: Display the result
-            System.out.println("Original : " + original);
-            System.out.println("Reversed : " + reversed);
-
-            if (isPalindrome) {
-                System.out.println("Result   : \"" + original + "\" IS a palindrome ✓");
-            } else {
-                System.out.println("Result   : \"" + original + "\" is NOT a palindrome ✗");
-            }
-
+            // Display result
+            System.out.println("Original  : " + original);
+            System.out.println("Char[]    : " + java.util.Arrays.toString(chars));
+            System.out.println("Result    : \"" + original + "\" " +
+                    (isPalindrome ? "IS a palindrome ✓" : "is NOT a palindrome ✗"));
             System.out.println("----------------------------------------");
         }
 
