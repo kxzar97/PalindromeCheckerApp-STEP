@@ -1,7 +1,14 @@
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class PalindromeCheckerApp {
 
+    /**
+     * Application entry point.
+     *
+     * @param args Command-line arguments
+     */
     public static void main(String[] args) {
 
         // --------------------------------------------------------
@@ -10,12 +17,12 @@ public class PalindromeCheckerApp {
         System.out.println("========================================");
         System.out.println("   Palindrome Checker Management System ");
         System.out.println("========================================");
-        System.out.println("Application Version: 5.0");
+        System.out.println("Application Version: 6.0");
         System.out.println("Application started successfully.");
         System.out.println();
 
         // --------------------------------------------------------
-        // UC5 - Stack-Based Palindrome Check
+        // UC6 - Queue + Stack Based Palindrome Check
         // --------------------------------------------------------
 
         // Test words
@@ -23,28 +30,35 @@ public class PalindromeCheckerApp {
 
         for (String original : testWords) {
 
-            // Step 1: Push all characters into the Stack
+            // Step 1: Enqueue characters into Queue AND push into Stack
+            Queue<Character> queue = new LinkedList<>();
             Stack<Character> stack = new Stack<>();
 
             for (int i = 0; i < original.length(); i++) {
-                stack.push(original.charAt(i));  // push each character
+                queue.offer(original.charAt(i));   // enqueue - FIFO
+                stack.push(original.charAt(i));    // push    - LIFO
             }
 
-            // Step 2: Pop characters from Stack to build reversed string
-            // Stack follows LIFO — last pushed character comes out first
-            String reversed = "";
+            // Step 2: Dequeue from Queue and Pop from Stack
+            // Queue dequeue = original order (FIFO)
+            // Stack pop     = reversed order (LIFO)
+            boolean isPalindrome = true;
 
-            while (!stack.isEmpty()) {
-                reversed = reversed + stack.pop();  // pop reverses the order
+            while (!queue.isEmpty()) {
+                char fromQueue = queue.poll();   // FIFO - first character out
+                char fromStack = stack.pop();    // LIFO - last character out
+
+                // Step 3: Compare dequeue vs pop
+                if (fromQueue != fromStack) {
+                    isPalindrome = false;        // mismatch = not a palindrome
+                    break;
+                }
             }
-
-            // Step 3: Compare original with reversed
-            boolean isPalindrome = original.equals(reversed);
 
             // Print result
             System.out.println("Original  : " + original);
-            System.out.println("Reversed  : " + reversed);
-            System.out.println("Stack     : LIFO reversal applied");
+            System.out.println("Queue     : FIFO - reads characters in original order");
+            System.out.println("Stack     : LIFO - reads characters in reversed order");
             System.out.println("Result    : \"" + original + "\" " +
                     (isPalindrome ? "IS a palindrome ✓" : "is NOT a palindrome ✗"));
             System.out.println("----------------------------------------");
@@ -52,5 +66,6 @@ public class PalindromeCheckerApp {
 
         System.out.println("Program completed successfully.");
     }
-
 }
+
+
