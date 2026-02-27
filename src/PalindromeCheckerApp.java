@@ -1,32 +1,42 @@
 public class PalindromeCheckerApp {
 
     /**
-     * Recursive method to check palindrome.
-     * Compares characters at start and end index,
-     * moving inward with each recursive call.
+     * Normalizes the string by:
+     * - Converting to lowercase
+     * - Removing spaces and non-alphanumeric characters
      *
-     * Base Condition 1: start >= end → all characters matched → true
-     * Base Condition 2: mismatch found → false
+     * @param str Raw input string
+     * @return Cleaned, normalized string
+     */
+    static String normalize(String str) {
+        // Convert to lowercase
+        String lower = str.toLowerCase();
+
+        // Remove all non-alphanumeric characters using regex
+        String cleaned = lower.replaceAll("[^a-z0-9]", "");
+
+        return cleaned;
+    }
+
+    /**
+     * Checks if the normalized string is a palindrome
+     * using two-pointer technique.
      *
-     * @param str   The string to check
-     * @param start Starting index (left pointer)
-     * @param end   Ending index (right pointer)
+     * @param str Normalized string
      * @return true if palindrome, false otherwise
      */
-    static boolean isPalindrome(String str, int start, int end) {
+    static boolean isPalindrome(String str) {
+        int start = 0;
+        int end = str.length() - 1;
 
-        // Base Condition: pointers met or crossed — palindrome confirmed
-        if (start >= end) {
-            return true;
+        while (start < end) {
+            if (str.charAt(start) != str.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
         }
-
-        // Base Condition: mismatch found — not a palindrome
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
-        }
-
-        // Recursive Call: move inward and check next pair
-        return isPalindrome(str, start + 1, end - 1);
+        return true;
     }
 
     /**
@@ -42,26 +52,36 @@ public class PalindromeCheckerApp {
         System.out.println("========================================");
         System.out.println("   Palindrome Checker Management System ");
         System.out.println("========================================");
-        System.out.println("Application Version: 9.0");
+        System.out.println("Application Version: 10.0");
         System.out.println("Application started successfully.");
         System.out.println();
 
         // --------------------------------------------------------
-        // UC9 - Recursive Palindrome Check
+        // UC10 - Case-Insensitive & Space-Ignored Palindrome Check
         // --------------------------------------------------------
 
-        // Test words
-        String[] testWords = {"racecar", "hello", "madam", "world", "level"};
+        // Test strings — includes spaces, uppercase, special characters
+        String[] testWords = {
+                "racecar",
+                "Race Car",
+                "A man a plan a canal Panama",
+                "hello",
+                "No lemon no melon",
+                "Was it a car or a cat I saw"
+        };
 
         for (String original : testWords) {
 
-            // Call recursive method with full start and end index
-            boolean result = isPalindrome(original, 0, original.length() - 1);
+            // Step 1: Normalize the string
+            String normalized = normalize(original);
+
+            // Step 2: Apply palindrome logic on cleaned string
+            boolean result = isPalindrome(normalized);
 
             // Print result
-            System.out.println("Original  : " + original);
-            System.out.println("Technique : Recursion with Call Stack");
-            System.out.println("Result    : \"" + original + "\" " +
+            System.out.println("Original   : " + original);
+            System.out.println("Normalized : " + normalized);
+            System.out.println("Result     : \"" + original + "\" " +
                     (result ? "IS a palindrome ✓" : "is NOT a palindrome ✗"));
             System.out.println("----------------------------------------");
         }
